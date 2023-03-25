@@ -1,0 +1,68 @@
+<!--::regervation_part start::-->
+<section class="regervation_part section_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-5">
+                <div class="section_tittle">
+                    <p>Reservation</p>
+                    <h2>{{titre}}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="regervation_part_iner">
+                    <form #tableForm="ngForm"  (ngSubmit)="add_edit_Table()">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" id="inputEmail4" name="1" placeholder="Name *" [(ngModel)]="table.name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="email" class="form-control" id="inputPassword4"
+                                    placeholder="Email address *" name="2" [(ngModel)]="table.email">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="number" class="form-control" id="inputEmail4" name="3" placeholder="Number of guests" [(ngModel)]="table.guests" min="0" max="10">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" id="pnone" placeholder="Phone number *" name="4" [(ngModel)]="table.phoneNumber">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <div class="input-group date">
+                                    <input id="datepicker" type="date" class="form-control" name="5" placeholder="Date *" [(ngModel)]="table.date" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <select class="form-control" id="Select2" [(ngModel)]="table.time" name="6">
+                                    <option value="" selected>Time *</option>
+                                    <option value="8 AM TO 10AM">8 AM TO 10AM</option>
+                                    <option value="10 AM TO 12PM">10 AM TO 12PM</option>
+                                    <option value="12PM TO 2PM">12PM TO 2PM</option>
+                                    <option value="2PM TO 4PM">2PM TO 4PM</option>
+                                    <option value="4PM TO 6PM">4PM TO 6PM</option>
+                                    <option value="6PM TO 8PM">6PM TO 8PM</option>
+                                    <option value="8PM TO 10PM">8PM TO 10PM</option>
+                                    <option value="10PM TO 12PM">10PM TO 12PM</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <textarea class="form-control" id="Textarea" rows="4"
+                                    placeholder="Your Note *" [(ngModel)]="table.note" name="7"></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="regerv_btn">
+                            <input
+                            type="submit"
+                            class="btn_4"
+                            value={{button}}
+                          />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--::regervation_part end::-->

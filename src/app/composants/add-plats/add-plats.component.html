@@ -1,0 +1,63 @@
+<section class="banner_part">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="banner_text">
+                    <div class="banner_text_iner">
+                        <h1>{{titre}}</h1>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="regervation_part_iner">
+                                    <form #platForm="ngForm"  (ngSubmit)="add_edit_plat()" enctype="multipart/form-data">
+                                            <div class="form-group col-12">
+                                                <input type="text" class="form-control" [(ngModel)]="plat.name" name="name"
+                                                    placeholder="platName" />
+                                            </div>
+                                            <div class="form-group col-12">
+                                                <label for="pet-select">Choose a categorie:</label>
+                                                <select  [(ngModel)]="plat.categorie" name="categorie" style="width: 250px; height: 35px;">
+
+                                                    <option  value="">breakfast</option>
+                                                    <option value="dinner">dinner</option>
+                                                    <option value="launch">launch</option>
+                                                    <option value="sneaks">sneaks</option>
+                                                    <option value="both">both</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-12">
+                                                <input type="text" class="form-control" name="desciption" placeholder="Description*" [(ngModel)]="plat.description"
+                                                    placeholder="desciption" >
+                                            </div>
+                                            <div class="form-group col-12">
+                                                <input type="number" class="form-control" name="3" [(ngModel)]="plat.price"
+                                                        placeholder="Price*"></div>
+                                                        <div class="form-group col-md-6">
+                                                            <button
+                                                              type="button"
+                                                              (click)="filePicker.click()"
+                                                              class="btn btn-success"
+                                                            >
+                                                              Sélectionner image
+                                                            </button>
+                                                            <input
+                                                            style="visibility: hidden;"
+                                                              type="file"
+                                                              class="form-control"
+                                                              id="pnone"
+                                                              placeholder="image *"
+                                                              #filePicker
+                                                              (change)='onImageSelected($event)' name="image"   multiple
+                                                            />
+                                                          </div>
+                                        
+                                                          <img style="height: 50px; width: 50px;" [src]="imagePreview" alt="test">
+                                                        <div class="regerv_btn">
+                                                            <input
+                                                              type="submit"
+                                                              class="btn_4"
+                                                              value={{button}}
+                                                            />
+                                                          </div>
+                                    </form>
+                                </div></div></div></div></div></div></div></div></section>

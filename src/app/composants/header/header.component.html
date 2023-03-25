@@ -1,0 +1,64 @@
+<!--::header part start::-->
+<header class="main_menu home_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="index.html"> <img src="assets/img/logo.png" alt="logo"> </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse main-menu-item justify-content-end"
+                        id="navbarSupportedContent">
+                        <ul class="navbar-nav">
+                            <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/" class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item" *ngIf="connectedUser==='admin'">
+                                <a class="nav-link" routerLink="admin">Dashboard</a>
+                            </li>
+                            <li  class="nav-item dropdown" routerLinkActive="active" *ngIf="connectedUser==='admin'">
+                                <a class="nav-link dropdown-toggle" routerLink="add-chef" id="navbarDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Add_Chef
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a  class="dropdown-item" routerLink="add-chef">Add_Chef</a>
+                                    <a  class="dropdown-item" routerLink="add-plat">Add_Plat</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" routerLink="menu">Menu</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" routerLink="mesTables" *ngIf="connectedUser==='user'">Table Booked</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" routerLink="chef">Chefs</a>
+                            </li>
+                            <li  class="nav-item dropdown" routerLinkActive="active" *ngIf="connectedUser===''">
+                                <a class="nav-link dropdown-toggle" routerLink="signup" id="navbarDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Sign_UP
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a  class="dropdown-item" routerLink="signup">Sign_UP</a>
+                                    <a  class="dropdown-item" routerLink="login">Login</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="menu_btn">
+                        <a  routerLink="table" class="btn_1 d-none d-sm-block" *ngIf="connectedUser==='user'">book a tabel</a>
+                    </div>
+                    <div class="menu_btn">
+                        <a type="button" class="btn_1 d-none d-sm-block" (click)="logout()" *ngIf="connectedUser!==''">Logout</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Header part end-->
