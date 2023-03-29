@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableService } from 'src/app/services/table.service';
 
@@ -14,7 +15,7 @@ export class TableBookComponent implements OnInit {
   id:any
   titre:any
   button:any
-  constructor(private tableService:TableService,private route:Router,private AR:ActivatedRoute) { }
+  constructor(private tableService:TableService,private route:Router,private AR:ActivatedRoute,private snackbar:MatSnackBar) { }
 
   ngOnInit(): void {
     this.id = this.AR.snapshot.paramMap.get("id")
@@ -41,15 +42,21 @@ export class TableBookComponent implements OnInit {
   add_edit_Table(){
     if(this.id){
       this.tableService.updateTable(this.table).subscribe((res) => {
+        this.snackbar.open(res.message,"Cancel",{duration:4000})
         console.log(res.message);
         this.route.navigate(["mesTables"])
-      })
+      },(error)=>{
+        this.snackbar.open(error.error.message,"Cancel",{duration:4000})
+        console.log(error.error.message);})
     }
     else{
     this.tableService.addTable(this.table).subscribe((res) => {
+      this.snackbar.open(res.message,"Cancel",{duration:4000})
       console.log(res.message);
     this.route.navigate(['mesTables'])
-    })}
+    },(error)=>{
+      this.snackbar.open(error.error.message,"Cancel",{duration:4000})
+      console.log(error.error.message);})}
   }
   getTableById() {
     this.tableService.getTableById(this.id).subscribe((res) => {

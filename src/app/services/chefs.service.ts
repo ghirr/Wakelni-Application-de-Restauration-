@@ -32,10 +32,16 @@ export class ChefsService {
   getChefById(id:any){
     return this.bostagi.get<{chef:any}>(this.chefUrl + '/'+id )
   }
-  updateChef(chef:any){
+  updateChef(chef:any,id:any){
     console.log("here into add chef",chef);
+    const formData = new FormData()
+    formData.append('image', chef.image)
+    formData.append('firstName', chef.firstName)
+    formData.append('lastName', chef.lastName)
+    formData.append('description', chef.description)
+    formData.append('numCin', chef.numCin)
 
    
-    return this.bostagi.put<{message:any}>(this.chefUrl,chef)
+    return this.bostagi.put<{message:any}>(this.chefUrl+'/'+id,formData)
   }
 }

@@ -1,11 +1,23 @@
 const mongoose = require('mongoose');  //import module mongoose 
 
 const platSchema= mongoose.Schema({
-    name:String,
-    categorie:String,
+    name:{
+        type: String,
+        required: true,
+    },
+    categorie:{
+        type: String,
+        required: true,
+    },
     description:String,
-    price:Number,
-    image:String,
+    price:{
+        type: Number,
+        required: true,
+    },
+    image:{
+        type: String,
+        required: true,
+    },
 })
 
 const plat = mongoose.model("plats",platSchema) 

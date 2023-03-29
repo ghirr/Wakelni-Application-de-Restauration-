@@ -10,7 +10,7 @@ userrouter.post("/sign-up", async (req, res) => {
     const data = await User.findOne({ email: req.body.email });
     if (data?.email) {
       res.status(200).json({
-        message: "0",
+        message: "Email is Already used",
       });
     } else {
       bcrypt.hash(req.body.password, 10, function (err, hash) {
@@ -30,29 +30,29 @@ userrouter.post("/sign-up", async (req, res) => {
             const transporter = nodemailer.createTransport({
               host:"http://localhost",
               port:4200,
-              service: "Outlook",
+              service: "gmail",
               auth: {
                 user: "islem24762048@gmail.com",
-                pass: "Ghirr02#@",
+                pass: "mnecvzwcnglgqyxr",
               },
             });
   
             const mailOptions = {
-              from: "dingoresto@gmail.com",
+              from: "dingoResto@officiel.com",
               to: req.body.email,
   
-              subject: "signUp",
-              text: "Marhbee bik chez Dingo.",
+              subject: "Dingo_Restaurent",
+              html: "Nous sommes heureux de vous accueillir sur notre site de restauration. Votre compte a bien été créé.</p><p>Vous pouvez vous connecter à votre compte en utilisant le lien ci-dessous :</p><p><a href='https://www.mon-site-de-restauration.com/connexion'>Se connecter</a></p><p>À bientôt !</p>",
             };
   
-            transporter.sendMail(mailOptions, function (error, info) {
+            transporter.sendMail(mailOptions, (error)=>{
               if (error) {
                 console.log(error);
               } else {
                 console.log("Email sent: " + info.response);
               }
             });
-            res.status(200).json({ message: "1" });
+            res.status(200).json({ message: "register succesfully" });
           });
         }
       });
@@ -66,14 +66,16 @@ userrouter.post("/sign-up", async (req, res) => {
     User.findOne({ email: req.body.email }).then(async (findedUser) => {
       if (!findedUser) {
         res.status(200).json({
-          message: "0",
+          message: "please verify your credentials",
         });
       } else {
+        console.log(req.body.password);
+        console.log("findedUser:", findedUser);
         let comPwd = await bcrypt.compare(req.body.password, findedUser.password);
         console.log("here co pwf", comPwd);
         if (!comPwd) {
           res.status(200).json({
-            message: "1",
+            message: "please verify your credentials",
           });
         } else {
           let user = {
@@ -81,11 +83,10 @@ userrouter.post("/sign-up", async (req, res) => {
             firstName: findedUser.firstName,
             lastName: findedUser.lastName,
             email: findedUser.email,
-            password:findedUser.password,
             role:findedUser.role
           };
           res.status(200).json({
-            message: "2",
+            message: "Welcome "+user.firstName,
             user: user,
           });
         }

@@ -17,8 +17,16 @@ import { AddPlatsComponent } from './composants/add-plats/add-plats.component';
 import { AddChefComponent } from './composants/add-chef/add-chef.component';
 import { DashadminComponent } from './composants/dashadmin/dashadmin.component';
 import { TableBookedComponent } from './composants/table-booked/table-booked.component';
-
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { ErrorPageComponent } from './composants/error-page/error-page.component';
+import { UserTabComponent } from './composants/admin/user-tab/user-tab.component';
+import { TablesTabComponent } from './composants/admin/tables-tab/tables-tab.component';
+import { PlatsTabComponent } from './composants/admin/plats-tab/plats-tab.component';
+import { ChefsTabsComponent } from './composants/admin/chefs-tabs/chefs-tabs.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -35,6 +43,12 @@ import { TableBookedComponent } from './composants/table-booked/table-booked.com
     AddChefComponent,
     DashadminComponent,
     TableBookedComponent,
+    ErrorPageComponent,
+    UserTabComponent,
+    TablesTabComponent,
+    PlatsTabComponent,
+    ChefsTabsComponent,
+    ConfirmDialogComponent,
     
   ],
   imports: [
@@ -43,7 +57,10 @@ import { TableBookedComponent } from './composants/table-booked/table-booked.com
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-
+    BrowserAnimationsModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    NgxPaginationModule 
   ],
   providers: [],
   bootstrap: [AppComponent],

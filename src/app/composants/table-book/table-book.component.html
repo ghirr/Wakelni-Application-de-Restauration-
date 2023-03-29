@@ -1,3 +1,4 @@
+
 <!--::regervation_part start::-->
 <section class="regervation_part section_padding">
     <div class="container">
@@ -32,12 +33,12 @@
                                     <input id="datepicker" type="date" class="form-control" name="5" placeholder="Date *" [(ngModel)]="table.date" />
                                 </div>
                             </div>
-                            <div class="form-group col-md-6">
-                                <select class="form-control" id="Select2" [(ngModel)]="table.time" name="6">
-                                    <option value="" selected>Time *</option>
-                                    <option value="8 AM TO 10AM">8 AM TO 10AM</option>
-                                    <option value="10 AM TO 12PM">10 AM TO 12PM</option>
-                                    <option value="12PM TO 2PM">12PM TO 2PM</option>
+                            <div class="form-group col-md-6" style="color: aliceblue;">
+                                <select class="form-control" style="text-align: left;color: aliceblue;" id="Select2" [(ngModel)]="table.time" name="6">
+                                    <option value="" disabled selected style="background-color: aliceblue;padding: auto;" >Time *</option>
+                                    <option value="8 AM TO 10AM">8AM TO 10AM</option>
+                                    <option value="10 AM TO 12PM">10AM TO 12AM</option>
+                                    <option value="12PM TO 2PM">12AM TO 2PM</option>
                                     <option value="2PM TO 4PM">2PM TO 4PM</option>
                                     <option value="4PM TO 6PM">4PM TO 6PM</option>
                                     <option value="6PM TO 8PM">6PM TO 8PM</option>
@@ -66,3 +67,4 @@
     </div>
 </section>
 <!--::regervation_part end::-->
+

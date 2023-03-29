@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { ConfirmationDialogService } from 'src/app/services/confirmation-dialog.service';
 import { TableService } from 'src/app/services/table.service';
 
 @Component({
@@ -10,9 +12,11 @@ import { TableService } from 'src/app/services/table.service';
 export class TableBookedComponent implements OnInit {
   tables:any=[]
   id:any
-  constructor(private tableService:TableService,private router:Router) { }
+  constructor(private tableService:TableService,private router:Router, private confirmationDialogService: ConfirmationDialogService,private snackbar:MatSnackBar) { }
 
   ngOnInit(): void {
+    const snackBarConfig = new MatSnackBarConfig();
+    snackBarConfig.verticalPosition ='top';   // Positioning the snack bar 
     let LS = JSON.parse(localStorage.getItem("connectedUser") || '{}')
     if (LS.role) {
       this.id=LS.id
@@ -32,11 +36,16 @@ export class TableBookedComponent implements OnInit {
     })
   }
 deleteTable(id:any){
+  this.confirmationDialogService
+      .openConfirmationDialog('Confirmation', 'Voulez-vous vraiment supprimer cet élément ?')
+      .subscribe((result) => {
+        if (result) {
   this.tableService.deleteTable(id).subscribe((res)=>{
-    console.log(res.message);
+    this.snackbar.open(res.message,"Cancel",{duration:4000})
+      console.log(res.message);
     this.getTableByUserId()
     
-  })
+  })}})
 }
 editTable(id:any){
   this.router.navigate(['table/'+id])

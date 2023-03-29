@@ -1,11 +1,25 @@
 const mongoose = require('mongoose');  //import module mongoose 
 
 const chefSchema= mongoose.Schema({
-    firstName:String,
-    lastName:String,
+    firstName:{
+        type: String,
+        required: true,
+    },
+    lastName:{
+        type: String,
+        required: true,
+    },
     description:String,
-    numCin:String,
-    image:String,
+    numCin:{
+        type: String,
+        required: true,
+        unique: true,
+        length:8
+    },
+    image:{
+        type: String,
+        required: true,
+    },
 })
 
 const chef = mongoose.model("chefs",chefSchema) 

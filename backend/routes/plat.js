@@ -34,18 +34,42 @@ router.post(
   (req, res) => {
     console.log("here req body", req.body);
     console.log("here req files", req.file);
-
+    if(req.body.description=='undefined'){
+      req.body.description='pas de description'
+    }
     let url = req.protocol + "://" + req.get("host");
       const Plat = new plat({
         name: req.body.name,
         categorie: req.body.categorie,
         description: req.body.description,
         price: req.body.price,
-        image: url + "/images/" + req.file.filename,
+        image: url + "/images/" + req.file?.filename,
       });
+      if(!req.body.name ||req.body.name=='undefined'){
+        return res.status(400).json({ message: "Name required" });
+       }
+       if(!req.body.categorie||req.body.categorie=='undefined'||req.body.categorie==!'breakfast'){
+        return res.status(400).json({ message: "categorie required" });
+       }
+       if (!(['breakfast', 'dinner', 'launch', 'both', 'sneaks'].includes(req.body.categorie))){
+        return res.status(400).json({ message: "categorie is unknown" });
+      }
+       if(!req.body.price||req.body.price=='undefined'){
+        return res.status(400).json({ message: "price required" });
+       }
+       if (!(/^[0-9]+$/.test(req.body.price.toString()))) {
+        return res.status(400).json({ message: "invalid price" });
+      }
+       if(!req.file||!req.file.filename){
+        return res.status(400).json({ message: "image required" });
+       }
   
       Plat.save().then(() => {
         res.status(200).json({ message: "plats added" });
+      }).catch((error) => {
+        res.status(500).json({
+          error: error,
+        });
       });
     }
   );
@@ -65,7 +89,7 @@ router.delete("/:id", (req, res) => {
   console.log("here into delete", req.params.id);
   plat.deleteOne({ _id: req.params.id }).then(() => {
     res.status(200).json({
-      message: "deleted",
+      message:"plat deleted",
     });
   });
 });
@@ -80,17 +104,60 @@ router.get("/:id", (req, res) => {
 });
 //trait update plat
 
-router.put("", (req, res) => {
-  const Plat ={
-    name: req.body.name,
-    categorie: req.body.categorie,
-    description: req.body.description,
-    price: req.body.price,
-  };
-  plat.updateOne({ _id: req.body._id }, Plat).then(() => {
-    res.status(200).json({
-      message: "up to date plat",
-    });
+router.put("/:id",multer({ storage: storage }).single("image"), (req, res, next) => {
+  
+  if(req.body.description=='pas de description'||req.body.description=='undefined'||req.body.description==''){
+    req.body.description='pas de description'
+  }
+  const updatedPlat = new plat({
+        _id: req.params.id,
+        name: req.body.name,
+        categorie: req.body.categorie,
+        description: req.body.description,
+        price: req.body.price,
   });
+
+  if (req.file) {
+    const url = req.protocol + "://" + req.get("host");
+    updatedPlat.image = url + "/images/" + req.file.filename;
+  }
+
+  plat.findOneAndUpdate(
+    { _id: req.params.id },
+    updatedPlat,
+    { new: true }
+  )
+    .then((plat) => {
+      if (!plat) {
+        return res.status(404).json({ message: "plat not found" });
+      }
+      if(!req.body.name ||req.body.name=='undefined'){
+        return res.status(400).json({ message: "Name required" });
+       }
+       if(!req.body.categorie||req.body.categorie=='undefined'||req.body.categorie==!'breakfast'){
+        return res.status(400).json({ message: "categorie required" });
+       }
+       if (!(['breakfast', 'dinner', 'launch', 'both', 'sneaks'].includes(req.body.categorie))){
+        return res.status(400).json({ message: "categorie is unknown" });
+      }
+       if(!req.body.price||req.body.price=='undefined'){
+        return res.status(400).json({ message: "price required" });
+       }
+       if (!(/^[0-9]+$/.test(req.body.price.toString()))) {
+        return res.status(400).json({ message: "invalid price" });
+      }
+       if(!req.file||!req.file.filename){
+        return res.status(400).json({ message: "image required" });
+       }
+      res.status(200).json({
+        message: req.body.name+" updated successfully",
+        plat: plat,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        error: error,
+      });
+    });
 });
   module.exports = router;

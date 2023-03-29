@@ -1,0 +1,41 @@
+
+<div class="site-section bg-dark">
+    <div class="container">
+      <div class="row">
+      
+        <div class="col-lg-12">
+          <div class="widget-next-match">
+            <table class="table table-dark">
+              <thead>
+                <tr>
+                  <th>FirstName</th>
+                  <th>LastName</th>
+                  <th>description</th>
+                  <th>numCin</th>
+                  <th>image</th>
+                  <th>delete</th>
+                  <th>edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let c of chefs" appColors>
+                  <td>{{c.firstName}}</td>
+                  <td>{{c.lastName}}</td>
+                  <td>{{c.description}}</td>
+                  <td>{{c.numCin}}</td>
+                  <td><img style="height: 50px; width: 50px;" src="{{c.image}}"></td>
+                <td>
+                  <button type="button" class="btn btn-danger" (click)="deleteChef(c._id)" >delete</button>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-info" (click)="editChef(c._id)" >Edit</button>
+                </td>
+                </tr>
+            
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

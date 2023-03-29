@@ -4,6 +4,8 @@ const chef = require("../model/chefmodel");
 const Chef = require("../model/chefmodel"); //import model chef
 const router = express.Router();
 
+
+
 const MIME_TYPE = {
   "image/png": "png",
   "image/jpeg": "jpeg",
@@ -32,23 +34,48 @@ const storage = multer.diskStorage({
 router.post(
   "",
   multer({ storage: storage }).single("image"),
-  (req, res) => {
+  async(req, res) => {
     console.log("here req body", req.body);
     console.log("here req files", req.file);
-
+    const data = await Chef.findOne({ numCin: req.body.numCin });
+    if (data?.numCin) {
+      res.status(400).json({
+        message: "numCin is Already used",
+      });}else{
+        if(req.body.description=='undefined'){
+          req.body.description='pas de description'
+        }
     let url = req.protocol + "://" + req.get("host");
-
   const chef = new Chef({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     description: req.body.description,
     numCin: req.body.numCin,
-    image: url + "/images/" + req.file.filename,
+    image: url + "/images/" + req.file?.filename,
   });
-  
-  chef.save().then(() => {
+  if(!req.body.firstName ||req.body.firstName=='undefined'){
+    return res.status(400).json({ message: "First Name required" });
+   }
+   if(!req.body.lastName||req.body.lastName=='undefined'){
+    return res.status(400).json({ message: "last Name required" });
+   }
+   if(!req.body.numCin||req.body.numCin=='undefined'){
+    return res.status(400).json({ message: "numero cin required" });
+   }
+  if(req.body.numCin.length!== 8){
+    return res.status(400).json({ message: "numCin langeur 8" });
+   }
+   if(!req.file||!req.file.filename){
+    return res.status(400).json({ message: "image required" });
+   }
+  chef.save().then((chef) => {
     res.status(200).json({ message: "chef added" });
+  }).catch((error) => {
+    res.status(500).json({
+      error: error,
+    });
   });
+}
 });
 
 
@@ -83,19 +110,55 @@ router.get("/:id", (req, res) => {
 });
 //trait update chef
 
-router.put("", (req, res) => {
-  const Chef = {
-    _id: req.body._id,
+router.put("/:id",multer({ storage: storage }).single("image"), (req, res, next) => {
+ 
+  const updatedChef = new Chef({
+    _id: req.params.id,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     description: req.body.description,
     numCin: req.body.numCin,
-  };
-  chef.findOneAndUpdate({ _id: req.body._id }, Chef).then(() => {
-    res.status(200).json({
-      message: "up to date chef",
-    });
   });
+
+  if (req.file) {
+    const url = req.protocol + "://" + req.get("host");
+    updatedChef.image = url + "/images/" + req.file.filename;
+  }
+  if(req.body.description=='pas de description'||req.body.description=='undefined'||req.body.description==''){
+    req.body.description='pas de description'
+  }
+  Chef.findOneAndUpdate(
+    { _id: req.params.id },
+    updatedChef,
+    { new: true }
+  )
+    .then((chef) => {
+      if(!req.body.firstName ||req.body.firstName=='undefined'){
+        return res.status(400).json({ message: "First Name required" });
+       }
+       if(!req.body.lastName||req.body.lastName=='undefined'){
+        return res.status(400).json({ message: "last Name required" });
+       }
+       if(!req.body.numCin||req.body.numCin=='undefined'){
+        return res.status(400).json({ message: "numero cin required" });
+       }
+      if(req.body.numCin.length!== 8){
+        return res.status(400).json({ message: "numCin langeur 8" });
+       }
+       if(!req.file||!req.file.filename){
+        return res.status(400).json({ message: "image required" });
+       }
+      res.status(200).json({
+        message: "Chef updated successfully",
+        chef: chef,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        error: error,
+      });
+    });
+    
 });
 
   module.exports = router;

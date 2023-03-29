@@ -28,8 +28,14 @@ export class PlatsService {
   getPlatById(id: any) {
     return this.bostagi.get<{ plat: any }>(this.platUrl + '/' + id)
   }
-  updatePlat(plat: any) {
+  updatePlat(plat: any,id:any) {
     console.log("here into edit plat", plat);
-    return this.bostagi.put<{ message: any }>(this.platUrl, plat)
+    const formData = new FormData()
+    formData.append('image', plat.image)
+    formData.append('name', plat.name)
+    formData.append('categorie', plat.categorie)
+    formData.append('description', plat.description)
+    formData.append('price', plat.price)
+    return this.bostagi.put<{ message: any }>(this.platUrl+ '/' + id, formData)
   }
 }

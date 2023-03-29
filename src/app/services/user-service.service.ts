@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { map, Observable, of, Subject, switchMap } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,25 +10,36 @@ export class UserServiceService {
   authlist=new Subject <string> ()
   constructor(private httpClient: HttpClient,private router:Router) { }
   addUser(user: any) {
-    return this.httpClient.post<{ message: any }>(`${this.user_url}/sign-up`, user)
-  }
-  loginUser(user:any){
-    return this.httpClient.post<{ message: any, user: any }>(`${this.user_url}/login`, user).subscribe((res)=>{
-      if (res.user) {
-        localStorage.setItem("connectedUser", JSON.stringify(res.user))
-        this.authlist.next(res.user.role)
-
-        if (res.user.role==="admin") {
-          this.router.navigate(['/admin'])
+    return this.httpClient.post<{ message: any }>(`${this.user_url}/sign-up`, user).pipe(
+      switchMap((res) => {
+        if (res.message == "register succesfully") {
+          return this.loginUser(user).pipe(
+            map((loginRes) => {
+              return { message: res.message, user: loginRes.user };
+            })
+          );
         } else {
-          this.router.navigate(['/table'])
-
+          return of(res);
         }
-
-      }
-      
-    })
-    
+      })
+    );
+  }
+  
+  loginUser(user:any): Observable<{ message: any, user: any }> {
+    return this.httpClient.post<{ message: any, user: any }>(`${this.user_url}/login`, user).pipe(
+      map((res) => {
+        if (res.user) {
+          localStorage.setItem("connectedUser", JSON.stringify(res.user));
+          this.authlist.next(res.user.role);
+          if (res.user.role==="admin") {
+            this.router.navigate(['/admin']);
+          } else {
+            this.router.navigate(['/table']);
+          }
+        }
+        return res;
+      })
+    );
   }
   serviceToHeader(){
     return this.authlist.asObservable()

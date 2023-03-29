@@ -1,12 +1,25 @@
 const mongoose = require('mongoose');  //import module mongoose
 const tableSchema= mongoose.Schema({
-    name: String,
+    name:{
+        type: String,
+        required: true,
+    },
     idUser:String,
     email:String,
     guests:Number,
-    phoneNumber: String,
-    date:String,
-    time:String,
+    phoneNumber: {
+        type: String,
+        required: true,
+        length:8
+    },
+    date:{
+        type: String,
+        required: true,
+    },
+    time:{
+        type: String,
+        required: true,
+    },
     note:String,
 })
 

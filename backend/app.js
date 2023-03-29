@@ -1,10 +1,14 @@
 const express = require("express"); //import module express
 const bodyParser = require("body-parser"); //import module body-parser
 const mongoose = require("mongoose"); //import module mongoose
+const cors = require("cors")
 
 // creation Applic express
 const app = express();
 const path = require("path");
+
+app.use(cors())
+
 mongoose.set('strictQuery', false);
 mongoose.connect("mongodb://localhost:27017/dingo");
 
